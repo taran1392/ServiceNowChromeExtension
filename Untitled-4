@@ -1,0 +1,8 @@
+sys_user_has_role
+
+https://hclad.service-now.com/incident_list.do?JSONv2&sysparm_query=assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^active=true
+
+<div class="wrap">
+                <div class="ui grey inverted segment">Grey</div>
+            <div class="ui grey inverted segment">Grey</div>
+            </div>

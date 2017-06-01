@@ -1,0 +1,26 @@
+{
+  "name": "ServiceNow",
+  "description": "Servicenow",
+  "manifest_version": 2,
+  "minimum_chrome_version": "23",
+  "version": "1.0.0",
+  "options_page": "index.html" ,
+    "browser_action": {
+      "default_icon": "icon48.png",
+      "default_popup": "popup.html",
+      "default_title": "SNOW"
+   },
+  "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "48": "icon48.png"
+   },"web_accessible_resources": [
+    "48.png"
+  ],"background": { "scripts": ["script2.js"] },
+    
+   "incognito": "split",
+    "permissions": ["tabs", "storage","unlimitedStorage",
+    "http://*/*", "https://*/*","notifications"
+   ],
+"content_security_policy": " script-src 'self' 'unsafe-inline'; object-src 'self' "
+}
