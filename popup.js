@@ -1,6 +1,67 @@
 document.getElementById("loginButton").addEventListener("click", validation,false);
+document.getElementById("myTicketTab").addEventListener("click", showMyTickets,false);
+document.getElementById("myGroupTicketTab").addEventListener("click", showMyGroupTickets,false);
+document.getElementById("assignedTicketTab").addEventListener("click", showAssignedTickets,false);
+document.getElementById("unAssignedTicketTab").addEventListener("click", showUnAssignedTickets,false);
+//document.getElementsByTagName("li").addEventListener("click",showDetails,false);
 
-                    
+
+$("#signout").click(function(){
+	
+	chrome.storage.local.remove('UserInfo',function(){
+		
+        document.getElementById("newdiv").style.display='none';
+		
+		document.getElementById("content").style.display='block';
+		
+	});
+	
+});
+
+$('#searchInput').keyup(function(){
+    //$("input").css("background-color", "pink");
+	console.log("keyup");
+	
+	var filter=$(this).val();
+	console.log("filer"+filter);
+	
+	$("li").each(function(i,e){
+		console.log($(this).text());	
+		
+		var text=$(this).text();
+		if(text.toLowerCase().search(filter.toLowerCase())>=0){
+			
+			e.style.display='block';
+		}else{
+			
+			e.style.display='none';
+		}
+		
+	});
+});
+
+
+$(document).on('click','li',function(e) {
+	
+	console.log("li clicked");
+	console.log($(this).index());
+	console.log('id '+$(this).attr('id'));
+	$(".modalHeader").html($(this).attr('id')+" | WorkNotes");
+	$("#modalContent").html(myTable.getIncDetails($(this).attr('id')));
+	document.getElementById('modal').style.display='block';
+});
+
+$('.closebutton').on('click',function(e){
+	
+	
+	
+	document.getElementById('modal').style.display='none';
+	
+});
+                  var myTable=incTable();
+var KEY_INCIDENT="incidents";
+var KEY_USERINFO="UserInfo";
+var UserInfo;  
 function validation() {
  var isValid = true;
        var inp_frm =  document.getElementsByTagName("input");
@@ -27,7 +88,9 @@ xhr.onreadystatechange = function() {
  
       if(xhr.status==200){
           showError("You are Successfully Logged In");
-          
+          document.getElementById("content").style.display='none';
+        document.getElementById("newdiv").style.display='block';
+		location.reload();
               
           var data=JSON.parse(xhr.responseText);
           var userFullname=data.records[0].user;
@@ -61,7 +124,6 @@ xhr.send();
 
 
 
-
 function showError(error){
     
     document.getElementById("error").innerHTML=error;
@@ -78,16 +140,93 @@ function showError(error){
     //AJAX Request for Valdiation
 //---------------Storage (Check Logged IN)---------------------------
 chrome.storage.local.get('UserInfo', function(result){
-                         
-    if (result.userInfo==null)
+                     console.log(result);    
+    if (result.UserInfo==null)
         {
             showError('Not Logged In');
+			 document.getElementById("newdiv").style.display='none';
         }
     else{
+		UserInfo=result.UserInfo;
         
         console.log(result.userInfo);
         showError('You are Logged in');
       document.getElementById("content").style.display='none';
         document.getElementById("newdiv").style.display='block';
     }});
+	
+	
+	
+	chrome.storage.local.get(KEY_INCIDENT,function(value){
+    
+    
+    //console.log("Incidents "+ console.log(JSON.stringify(value)) );
+    console.log(UserInfo);
+          myTable.initialize(value.incidents,UserInfo.username);
+		  console.log(value.incidents);
+    
+            document.getElementById("listDiv").innerHTML=myTable.getGroupIncidentList();
+      
+    
+    
+    
+    
+});
+
+
+
+
+
+function showMyTickets(evt) {
+  var i, x, tablinks;
+  document.getElementById("listDiv").innerHTML=myTable.getMyIncidentList();
+  
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  
+  evt.currentTarget.className += " w3-red";
+}
+
+
+function showMyGroupTickets(evt) {
+  var i, x, tablinks;
+  document.getElementById("listDiv").innerHTML=myTable.getGroupIncidentList();
+  
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  
+  evt.currentTarget.className += " w3-red";
+}
+function showAssignedTickets(evt) {
+  var i, x, tablinks;
+  document.getElementById("listDiv").innerHTML=myTable.getAssignedIncidentList();
+  
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  
+  evt.currentTarget.className += " w3-red";
+}
+	
+	function showUnAssignedTickets(evt) {
+  var i, x, tablinks;
+  document.getElementById("listDiv").innerHTML=myTable.getUnAssignedIncidentList();
+  
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  
+  evt.currentTarget.className += " w3-red";
+}
+	
+	
+	
+	
+		
 

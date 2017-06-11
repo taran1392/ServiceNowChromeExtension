@@ -2,14 +2,14 @@
 var LOGGED_IN=false;
 var USERINFO_KEY="UserInfo";
 var UserInfo;
-
+var firstRun=true;
 var KEY_INCIDENT="incidents";
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
         
           var storageChange = changes[USERINFO_KEY];
-        
-            if(storageChange)
+console.log(storageChange);        
+            if(storageChange.newValue)
                 {
                         LOGGED_IN=true;
   
@@ -18,7 +18,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
                 }else{
                     LOGGED_IN=false;
                     UserInfo=null;
-                    
+                    firstRun=true;
                     show('You have Signed Out from service now');
                     
                 }
@@ -29,6 +29,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
                       namespace,
                       storageChange.oldValue,
                       storageChange.newValue);
+					  console.log(changes);
         
       });
 
@@ -49,6 +50,15 @@ chrome.storage.local.get(USERINFO_KEY,function(value){
     
 });
 
+
+
+function showAlertNumber(number){
+	
+	
+	
+	chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
+chrome.browserAction.setBadgeText({text: ''+number});
+}
 
 function show(text) {
     
@@ -162,6 +172,11 @@ xhr.open("GET", "https://hclad.service-now.com/incident_list.do?JSONv2&displayva
               show("Please Sign in again..");
            //   return;
           }else{
+			  
+			  var total=0;
+			  var unassigned=0;
+			  var assigned=0;
+			  var assignedUser=0;
       var list=JSON.parse(xhr.responseText);
       
       console.log("list has property ? "+list.hasOwnProperty("records"));
@@ -180,17 +195,36 @@ xhr.open("GET", "https://hclad.service-now.com/incident_list.do?JSONv2&displayva
               }else{
                   
                   console.log("New  inc "+list[j].number);
-          
+						if(!firstRun)
                         show("New Tciket Update "+list[j].number);
 
                   //incidentList.push(list[i]);
                   
               }
+			  
+			  
+			  if(list[j].assigned_to)
+			  {
+					assigned++;
+			  }else{
+				  unassigned++;
+			  }
+			  
+			  
+			  
+			  
+			  
+			  
       }
       
+      firtRun=false;
       
-      
-      
+      show(" Total tickets: "+list.length+"\n Assigned Tickets: "+assigned+"\n UnAssignedTickets: "+unassigned);
+	  showAlertNumber(list.length);
+	  var myAudio = new Audio();        // create the audio object
+myAudio.src = "sounds/yeahaha.ogg"; // assign the audio file to its src
+myAudio.play();
+console.log(myAudio);   
       incidentList=list;
               
               chrome.storage.local.set({"incidents":incidentList});
@@ -253,7 +287,7 @@ if (window.Notification) {
             console.log("User not logged in");
         }interval = 0;
     }
-  }, 60000);
+  }, 300000);
 }
 
 

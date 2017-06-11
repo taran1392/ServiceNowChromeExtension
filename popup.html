@@ -1,16 +1,17 @@
 
 <html>
 <head>
+
+<script src="js/jquery.js"></script>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+    
 
-   
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="popup.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     
     <body>
@@ -41,20 +42,63 @@
 </div>
         
         <div id = "newdiv">
-         
-                <div class="ui compact grey    segment">
-  <p>Incident INC1318932
-                    
-                    </p>
+        
+
+
+
+
+<div class="w3-container">
+
+<div class="w3-top">
+  <div class="w3-bar w3-red" style="text-align:center">
+    
+	 <a href="#" class="w3-bar-item"><input class="w3-input w3-border w3-padding" id="searchInput" type="text" placeholder="Search for tickets.." id="myInput" ></a>
+   
+     <a href="#" class="w3-bar-item w3-button" id="signout" style="float:right">sign out</a>
+  </div>
 </div>
-                     <div class="ui compact grey segment">
-  <p>Incident INC1318932
-                    
-                    </p>
+
+
+<div class="w3-bar w3-black tabs" >
+    <button class="w3-bar-item w3-button tablink w3-red" id="myGroupTicketTab">Group</button>
+    <button class="w3-bar-item w3-button tablink"  id="myTicketTab" >My</button>
+	<button class="w3-bar-item w3-button tablink"  id="assignedTicketTab" >Assigned</button>
+	<button class="w3-bar-item w3-button tablink"  id="unAssignedTicketTab" >UnAssigned</button>
+    
+  </div>
+  
+  <div id="listDiv" class="w3-container w3-border city">
+   
+  </div>
+
+  
 </div>
+
+</div>
+
+
+
+<div id="modal" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal"> 
+        <span 
+        class="closebutton w3-button w3-display-topright ">&times;</span>
+        <h4 class=modalHeader></h4>
+      </header>
+      <div class="w3-container" id="modalContent">
+       
+      </div>
+      <footer class="w3-container w3-teal">
+        <p></p>
+      </footer>
+    </div>
+  </div>
+		
+               
       </div>
       
 </body>
+<script src="helper.js"></script>
  <script src = "popup.js"> </script>
 </html>
 
